@@ -1,0 +1,15 @@
+.visualizer {
+  display: flex;
+  height: calc(80vh - 2px);
+  border: 1px solid;
+  margin: 15vh 5vh 0 5vh;
+}
+
+.column {
+  display: inline-block;
+  //width: calc(5% - 2px);
+  background-color: skyblue;
+  border: 1px solid deepskyblue;
+  margin: 0;
+  align-self: flex-end;
+}
