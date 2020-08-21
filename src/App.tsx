@@ -1,11 +1,14 @@
 import React from 'react';
 import styles from './App.module.scss';
-import Visualizer from './components/visualizer/visualizer';
+import Visualizer from './Components/Visualizer/Visualizer';
+import bubbleSort, {
+  bubbleSortColumnColor,
+} from './Components/Visualizer/Sorters/bubbleSort';
 
 function App() {
   return (
     <div className={styles.App}>
-      <Visualizer />
+      <Visualizer sort={bubbleSort} columnColor={bubbleSortColumnColor} />
     </div>
   );
 }
