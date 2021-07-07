@@ -1,0 +1,13 @@
+.sortingVisualizer {
+  display: flex;
+  height: calc(80vh - 2px);
+  border: 1px solid;
+  margin: 5vh 5vh 0 5vh;
+}
+
+.column {
+  display: inline-block;
+  border: 1px solid deepskyblue;
+  margin: 0;
+  align-self: flex-end;
+}
