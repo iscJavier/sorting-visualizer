@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { randomIntArray } from '../../Utils/random';
+import sleep from '../../Utils/sleep';
 import styles from './sortingVisualizer.module.scss';
 import {
   SortingVisualizerProps,
@@ -9,7 +10,7 @@ import {
 
 const sortingColors: SortingColors = {
   Current: 'dodgerblue',
-  Max: 'navy',
+  Max: 'darkblue',
   Completed: 'aquamarine',
   Unsorted: 'lightskyblue',
 };
@@ -20,39 +21,47 @@ let previousId: number;
 const initialState: () => SortingVisualizerState = () => {
   const ARR_LENGTH = 50;
   const id = Math.random();
-  previousId = id;
-  return {
-    arr: randomIntArray(ARR_LENGTH),
-    i: ARR_LENGTH,
-    j: 0,
+  const state = {
+    array: randomIntArray(ARR_LENGTH),
+    limit: ARR_LENGTH,
+    current: 0,
     id,
+    finished: false,
   };
+  return state;
 };
 
 const SortingVisualizer = (props: SortingVisualizerProps) => {
   const [state, setState] = useState(() => {
-    return initialState();
+    const init = initialState();
+    previousId = init.id;
+    return init;
   });
 
   useEffect(() => {
     if (previousSorter !== undefined) {
-      setState(initialState());
+      const init = initialState();
+      previousId = init.id;
+      setState(init);
     }
     previousSorter = props.sorter.name;
   }, [props.sorter]);
 
   useEffect(() => {
-    const asyncStepSort = async () => {
-      const newState = await props.sorter.stepSort(state);
-      if (newState.id === previousId) {
-        setState(newState);
-      }
-    };
-    asyncStepSort();
+    if (!state.finished) {
+      const sleepSort = async () => {
+        const newState = props.sorter.stepSort(state);
+        if (newState.id === previousId) {
+          await sleep();
+          setState(newState);
+        }
+      };
+      sleepSort();
+    }
   }, [state, props.sorter]);
 
-  const columnWidth = `calc(${100 / state.arr.length}% - 2px)`;
-  const columns = state.arr.map((x, columnIndex) => {
+  const columnWidth = `calc(${100 / state.array.length}% - 2px)`;
+  const columns = state.array.map((x, columnIndex) => {
     const columnHeight = `calc(${x}% - 2px)`;
     const bgColor = props.sorter.columnColor(state, columnIndex, sortingColors);
     const columnStyle = {
@@ -61,7 +70,9 @@ const SortingVisualizer = (props: SortingVisualizerProps) => {
       backgroundColor: bgColor,
     };
     return (
-      <div key={columnIndex} className={styles.column} style={columnStyle} />
+      <div key={columnIndex} className={styles.column} style={columnStyle}>
+        <span>{x}</span>
+      </div>
     );
   });
 

@@ -1,6 +1,6 @@
 import { SortingColors, SortingVisualizerState } from '../types';
 
-export type StepSort = (state: SortingVisualizerState) => Promise<SortingVisualizerState>;
+export type StepSort = (state: SortingVisualizerState) => SortingVisualizerState;
 
 export type ColumnColorGetter = (
   state: SortingVisualizerState,

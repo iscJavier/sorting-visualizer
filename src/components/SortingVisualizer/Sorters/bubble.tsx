@@ -1,18 +1,13 @@
-import Sorter, { ColumnColorGetter, StepSort } from './types';
+import { ColumnColorGetter, StepSort } from './types';
 import { SortingColors, SortingVisualizerState } from '../types';
-import sleep from '../../../Utils/sleep';
 
-const columnColor: ColumnColorGetter = (
+export const columnColor: ColumnColorGetter = (
   state: SortingVisualizerState,
   columnIndex: number,
   colors: SortingColors
 ) => {
-  const [array, limit, current, next] = [
-    state.arr,
-    state.i,
-    state.j,
-    state.j + 1,
-  ];
+  const { array, limit, current } = state;
+  const next = current + 1;
   if (columnIndex >= limit) {
     return colors.Completed;
   }
@@ -28,37 +23,28 @@ const columnColor: ColumnColorGetter = (
   return colors.Unsorted;
 };
 
-const stepSort: StepSort = async (state: SortingVisualizerState) => {
-  const { arr, i, j, id } = state;
-  if (i < 1) {
-    return new Promise<SortingVisualizerState>((_) => ({ arr, i, j, id }));
+export const stepSort: StepSort = (state: SortingVisualizerState) => {
+  console.log('sorting');
+  const { array, limit, current, id } = state;
+  const next = current + 1;
+
+  if (limit < 1) {
+    return { array, limit, current, id, finished: true };
   }
-  if (arr[j] > arr[j + 1]) {
-    const tmp = arr[j];
-    arr[j] = arr[j + 1];
-    arr[j + 1] = tmp;
+  if (array[current] > array[next]) {
+    const tmp = array[current];
+    array[current] = array[next];
+    array[next] = tmp;
   }
 
-  let newI = i;
-  let newJ = j;
-  if (j + 1 >= i - 1) {
-    newJ = 0;
-    newI--;
+  let newLimit = limit;
+  let newCurrent = current;
+  if (next >= limit - 1) {
+    newCurrent = 0;
+    newLimit--;
   } else {
-    newJ++;
+    newCurrent++;
   }
 
-  await sleep();
-  return Promise.resolve<SortingVisualizerState>({
-    arr,
-    i: newI,
-    j: newJ,
-    id,
-  });
+  return { array, limit: newLimit, current: newCurrent, id, finished: false };
 };
-
-const name = "Bubble Sort";
-
-const bubbleSort: Sorter = { stepSort, columnColor, name};
-
-export default bubbleSort;

@@ -11,6 +11,15 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+
+  .sorterButtons {
+    flex-direction: row;
+
+    button {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+  }
 }
 
 .AppBody {

@@ -5,10 +5,11 @@ export type SortingVisualizerProps = {
 };
 
 export type SortingVisualizerState = {
-  arr: number[];
-  i: number;
-  j: number;
+  array: number[];
+  limit: number;
+  current: number;
   id: number;
+  finished: boolean;
 };
 
 export type SortingColors = {
