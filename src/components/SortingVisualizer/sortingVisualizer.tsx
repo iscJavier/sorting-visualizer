@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { randomIntArray } from '../../Utils/random';
-import Sorter from './Sorters/types';
 import styles from './sortingVisualizer.module.scss';
 import {
   SortingVisualizerProps,
@@ -15,7 +14,7 @@ const sortingColors: SortingColors = {
   Unsorted: 'lightskyblue',
 };
 
-let previousSorter: Sorter;
+let previousSorter: string;
 let previousId: number;
 
 const initialState: () => SortingVisualizerState = () => {
@@ -39,7 +38,7 @@ const SortingVisualizer = (props: SortingVisualizerProps) => {
     if (previousSorter !== undefined) {
       setState(initialState());
     }
-    previousSorter = props.sorter;
+    previousSorter = props.sorter.name;
   }, [props.sorter]);
 
   useEffect(() => {
@@ -67,8 +66,8 @@ const SortingVisualizer = (props: SortingVisualizerProps) => {
   });
 
   return (
-    <div>
-      <div>
+    <div className={styles.sortingVisualizerContainer}>
+      <div className={styles.sortingName}>
         <p>{props.sorter.name}</p>
       </div>
       <div className={styles.sortingVisualizer}>{columns}</div>

@@ -1,8 +1,17 @@
+.sortingVisualizerContainer {
+  border: 1px solid;
+  height: calc(100% - 2px);
+}
+
+.sortingName {
+  height: calc(5% - 2px);
+}
+
 .sortingVisualizer {
   display: flex;
-  height: calc(80vh - 2px);
+  height: calc(90% - 2px);
   border: 1px solid;
-  margin: 5vh 5vh 0 5vh;
+  margin: 1vh 5vh 0 5vh;
 }
 
 .column {
